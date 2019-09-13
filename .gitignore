@@ -1,0 +1,14 @@
+~*.*
+*.bak
+*.jpg
+*.jpeg
+*.png
+*.PNG
+*.tif
+*.zip
+*.doc
+*.docx
+
+archive/
+sources/
+working/
