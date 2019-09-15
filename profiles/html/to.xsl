@@ -155,7 +155,7 @@
       </xsl:variable>
       <div id="{@xml:id}" class="{@type}{if (@type != 'reference') then ' callout ' else ''}{$divType}">
          <a href="#{@xml:id}" class="selflink" title="Povezava na ta razdelek">
-            <span class="badge {if (@type != 'reference') then $divType else 'primary'} large">
+            <span class="badge {if (@type != 'reference') then $divType else 'primary'}">
                <xsl:choose>
                   <xsl:when test="@type='question'">vprašanje</xsl:when>
                   <xsl:when test="@type='answer'">odgovor</xsl:when>
