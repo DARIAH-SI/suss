@@ -73,7 +73,7 @@
    <xsl:param name="numberFigures"></xsl:param>
    <xsl:param name="numberFrontTables"></xsl:param>
    <xsl:param name="numberHeadings"></xsl:param>
-   <xsl:param name="numberParagraphs"></xsl:param>
+   <xsl:param name="numberParagraphs">true</xsl:param>
    <xsl:param name="numberTables"></xsl:param>
    
    <!-- V html/head izpisani metapodatki -->
@@ -81,6 +81,24 @@
    <xsl:param name="keywords">Slovenščina, slovnica, jezik</xsl:param>
    <xsl:param name="title">Arhiv vprašanj in odgovorov o slovenskem jeziku ŠUSS (1998-2010)</xsl:param>
    
+   <xsldoc:doc xmlns:xsldoc="http://www.oxygenxml.com/ns/doc/xsl">
+      <xsldoc:desc>V css Hook dodam še nokej porjektno specifičnih CSS</xsldoc:desc>
+   </xsldoc:doc>
+   <xsl:template name="cssHook">
+      <xsl:if test="$title-bar-sticky = 'true'">
+         <xsl:value-of select="concat($path-general,'themes/css/foundation/6/sistory-sticky_title_bar.css')"/>
+      </xsl:if>
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css" rel="stylesheet" type="text/css" />
+      <link href="{concat($path-general,'themes/plugin/TipueSearch/6.1/tipuesearch/css/normalize.css')}" rel="stylesheet" type="text/css" />
+      <link href="{concat($path-general,'themes/css/plugin/TipueSearch/6.1/my-tipuesearch.css')}"  rel="stylesheet" type="text/css" />
+      <!-- dodam za povezave na same sebe -->
+      <style>
+         .selflink:hover { opacity: 0.5;}
+         .keywordlink:hover { opacity: 0.5;}
+         .numberParagraphLink {text-decoration: none;}
+         .numberParagraph:hover {color: black;}
+      </style>
+   </xsl:template>
    
    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>Novo ime za glavno vsebino (glavna navigacija)</desc>
@@ -114,7 +132,7 @@
       </xsl:variable>
       <p>
          <xsl:for-each select="tei:item">
-            <a id="{@xml:id}" href="{concat($sistoryPath,$keywords-file-id,'.html#',translate(translate(.,' /()',''),'čšžČŠŽ','cszCSZ'))}">
+            <a id="{@xml:id}" href="{concat($sistoryPath,$keywords-file-id,'.html#',translate(translate(.,' /()',''),'čšžČŠŽ','cszCSZ'))}" class="keywordlink">
                <span class="label secondary">
                   <xsl:value-of select="."/>
                </span>
@@ -127,7 +145,7 @@
    <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>Procesiranje specifilnih vsebinskih podpoglavij</desc>
    </doc>
-   <xsl:template match="tei:div[@type='question' or @type='answer' or @type='comment']">
+   <xsl:template match="tei:div[@type='question' or @type='answer' or @type='comment' or @type='reference']">
       <xsl:variable name="divType">
          <xsl:choose>
             <xsl:when test="@type='question'">alert</xsl:when>
@@ -135,13 +153,14 @@
             <xsl:when test="@type='comment'">secondary</xsl:when>
          </xsl:choose>
       </xsl:variable>
-      <div id="{@xml:id}" class="{@type} callout {$divType}">
-         <a href="#{@xml:id}">
-            <span class="badge {$divType}">
+      <div id="{@xml:id}" class="{@type}{if (@type != 'reference') then ' callout ' else ''}{$divType}">
+         <a href="#{@xml:id}" class="selflink" title="Povezava na ta razdelek">
+            <span class="badge {if (@type != 'reference') then $divType else 'primary'} large">
                <xsl:choose>
                   <xsl:when test="@type='question'">vprašanje</xsl:when>
                   <xsl:when test="@type='answer'">odgovor</xsl:when>
                   <xsl:when test="@type='comment'">komentar</xsl:when>
+                  <xsl:when test="@type='reference'">navedbe</xsl:when>
                </xsl:choose>
             </span>
          </a>
@@ -260,5 +279,58 @@
          </xsl:for-each-group>
       </ul>
    </xsl:template>
+   
+   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>How to number paragraphs: ga bom predrogačil na način, da bo omogočil linke na samega sebe</desc>
+   </doc>
+   <xsl:template name="numberParagraph">
+      <xsl:choose>
+         <xsl:when test="@xml:id and $numberParagraphs='true'">
+            <!-- dodam zunanji span in nato a -->
+            <span>
+               <a href="#{@xml:id}" title="povezava na ta odstavek" class="numberParagraphLink">
+                  <span class="numberParagraph">
+                     <xsl:number/>
+                  </span>
+               </a>
+            </span>
+         </xsl:when>
+         <xsl:otherwise>
+            <span class="numberParagraph">
+               <xsl:number/>
+            </span>
+         </xsl:otherwise>
+      </xsl:choose>
+   </xsl:template>
+   
+   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl" class="hook">
+      <desc>[common] Hook where actions can be inserted when making
+         a heading: originalno je prazen in sem ga dopolnil po vzoru procesiranja odd</desc>
+   </doc>
+   <xsl:template name="sectionHeadHook">
+      <xsl:variable name="ident">
+         <xsl:apply-templates mode="ident" select="."/>
+      </xsl:variable>
+      <xsl:variable name="d">
+         <xsl:apply-templates mode="depth" select="."/>
+      </xsl:variable>
+      <xsl:if test="$d &gt; 0">
+         <span class="bookmarklink">
+            <a class="bookmarklink" href="#{$ident}">
+               <xsl:attribute name="title">
+                  <xsl:text>povezava na ta razdelek </xsl:text>
+               </xsl:attribute>
+               <span class="invisible">
+                  <xsl:text>TEI: </xsl:text>
+                  <xsl:value-of select="tei:head[1]"/>
+               </span>
+               <span class="pilcrow">
+                  <xsl:text>¶</xsl:text>
+               </span>
+            </a>
+         </span>
+      </xsl:if>
+   </xsl:template>
+   
    
 </xsl:stylesheet>
