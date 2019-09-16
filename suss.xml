@@ -36,6 +36,10 @@
                <resp xml:lang="en">Conversion to TEI P5.</resp>
                <name>Tomaž Erjavec</name>
             </respStmt>
+            <respStmt>
+               <resp xml:lang="sl">Pretvorba v XHTML, postavitev na splet</resp>
+               <name>Andrej Pančur</name>
+            </respStmt>
          </titleStmt>
          <editionStmt>
             <edition>V1.0</edition>
@@ -97,6 +101,8 @@
          </tagsDecl>
       </encodingDesc>
       <revisionDesc xml:lang="en">
+         <change when="2019-09-13">
+            <name>Andrej Pančur</name>: byline to docAuthor.</change>
          <change when="2019-09-12">
             <name>Tomaž Erjavec</name>: Corrected metadata and improved aspects of the data.</change>
          <change when="2019-09-05">
@@ -105,114 +111,7 @@
    </teiHeader>
    <text xml:lang="sl">
       <front>
-         <titlePage><!--<docAuthor>
-               <forename>Luka</forename>
-               <surname>Vidmar</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Franc</forename>
-               <surname>Lanko Marušič</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Tatjana</forename>
-               <surname>Marvin</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Tina</forename>
-               <surname>Potrato</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Amanda</forename>
-               <surname>Saksida</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Petra</forename>
-               <surname>Tomažin</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Tina</forename>
-               <surname>Verovnik</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Rok</forename>
-               <surname>Žaucer</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Jaka</forename>
-               <surname>Železnikar</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Barbara</forename>
-               <surname>Benčina</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Ivana</forename>
-               <surname>Vekjet</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Irena</forename>
-               <surname>Jejčič</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Petra</forename>
-               <surname>Mišmaš</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Neva</forename>
-               <surname>Marc</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Ivana</forename>
-               <surname>Leban</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Elena</forename>
-               <surname>Kobal</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Amra</forename>
-               <surname>Halilović</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Sara</forename>
-               <surname>Krošelj</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Elbasana</forename>
-               <surname>Gaši</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Urša</forename>
-               <surname>Papler</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Marina</forename>
-               <surname>Koglot</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Mateja</forename>
-               <surname>Žnidarčič</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Sara</forename>
-               <surname>Bajc</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Karmen</forename>
-               <surname>Brus</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Sara</forename>
-               <surname>Adamlje</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Špela</forename>
-               <surname>Šušanj</surname>
-            </docAuthor>
-            <docAuthor>
-               <forename>Ana</forename>
-               <surname>Vodopivec</surname>
-            </docAuthor>-->
+         <titlePage>
             <docTitle>
                <titlePart>Arhiv vprašanj in odgovorov o slovenskem jeziku ŠUSS (1998-2010) — The ŠUSS archive of questions and answers about the Slovenian language (1998-2010)</titlePart>
             </docTitle>

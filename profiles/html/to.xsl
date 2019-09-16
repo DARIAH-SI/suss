@@ -332,5 +332,77 @@
       </xsl:if>
    </xsl:template>
    
+   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>Ker je zelo veliko avtorjev, jih ne izpiše v novi vrstici, temveč da med njih vejico</desc>
+   </doc>
+   <xsl:template match="tei:titleStmt" mode="kolofon">
+      <!-- avtor -->
+      <p>
+         <xsl:for-each select="tei:author">
+            <span itemprop="author">
+               <xsl:choose>
+                  <xsl:when test="tei:forename or tei:surname">
+                     <xsl:for-each select="tei:forename">
+                        <xsl:value-of select="."/>
+                        <xsl:if test="position() ne last()">
+                           <xsl:text> </xsl:text>
+                        </xsl:if>
+                     </xsl:for-each>
+                     <xsl:if test="tei:surname">
+                        <xsl:text> </xsl:text>
+                     </xsl:if>
+                     <xsl:for-each select="tei:surname">
+                        <xsl:value-of select="."/>
+                        <xsl:if test="position() ne last()">
+                           <xsl:text> </xsl:text>
+                        </xsl:if>
+                     </xsl:for-each>
+                  </xsl:when>
+                  <xsl:otherwise>
+                     <xsl:value-of select="."/>
+                  </xsl:otherwise>
+               </xsl:choose>
+            </span>
+            <xsl:if test="position() != last()">
+               <xsl:text>, </xsl:text>
+            </xsl:if>
+         </xsl:for-each>
+      </p>
+      <!-- Naslov mora vedno biti, zato ne preverjam, če obstaja. -->
+      <p itemprop="name">
+         <xsl:for-each select="tei:title[1]">
+            <b><xsl:value-of select="."/></b>
+            <xsl:if test="following-sibling::tei:title">
+               <xsl:text> : </xsl:text>
+            </xsl:if>
+            <xsl:for-each select="following-sibling::tei:title">
+               <xsl:value-of select="."/>
+               <xsl:if test="position() != last()">
+                  <xsl:text>, </xsl:text>
+               </xsl:if>
+            </xsl:for-each>
+         </xsl:for-each>
+      </p>
+      <br/>
+      <br/>
+      <xsl:apply-templates select="tei:respStmt" mode="kolofon"/>
+      <br/>
+      <xsl:if test="tei:funder">
+         <p itemprop="funder">
+            <xsl:value-of select="tei:funder"/>
+         </p>
+      </xsl:if>
+      <br/>
+   </xsl:template>
+   
+   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
+      <desc>Dodam povezavo</desc>
+   </doc>
+   <xsl:template match="tei:pubPlace" mode="kolofon">
+      <p>
+         <a href="{.}" target="_blank" title="CLARIN.SI"><xsl:apply-templates/></a>
+      </p>
+   </xsl:template>
+   
    
 </xsl:stylesheet>
